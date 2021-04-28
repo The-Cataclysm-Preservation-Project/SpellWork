@@ -3,7 +3,7 @@
     public sealed class SpellTargetRestrictionsEntry
     {
         public uint Id;
-        public float Unknown1;
+        public float ConeAngle;
         public uint MaxAffectedTargets;
         public uint MaxTargetLevel;
         public uint TargetCreatureType;

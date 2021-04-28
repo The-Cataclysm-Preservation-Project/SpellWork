@@ -43,8 +43,9 @@ namespace SpellWork.Spell
             _rtb.AppendFormatLine("Category = {0}, SpellIconID = {1}, activeIconID = {2}, SpellVisual = ({3},{4})",
                 _spell.Category, _spell.SpellIconID, _spell.ActiveIconID, _spell.SpellVisual[0], _spell.SpellVisual[1]);
 
-            _rtb.AppendFormatLine("Family {0}, flag [0] 0x{1:X8} [1] 0x{2:X8} [2] 0x{3:X8}",
-                (SpellFamilyNames)_spell.SpellFamilyName, _spell.SpellFamilyFlags[0], _spell.SpellFamilyFlags[1], _spell.SpellFamilyFlags[2]);
+            _rtb.AppendFormatLine("Family {0} ({1}), flag [0] 0x{2:X8} [1] 0x{3:X8} [2] 0x{4:X8}",
+                (SpellFamilyNames)_spell.SpellFamilyName, _spell.SpellFamilyName,
+                _spell.SpellFamilyFlags[0], _spell.SpellFamilyFlags[1], _spell.SpellFamilyFlags[2]);
 
             _rtb.AppendLine();
 
@@ -118,8 +119,7 @@ namespace SpellWork.Spell
                     _rtb.AppendLine();
             }
 
-            _rtb.AppendFormatLine("Spell Level = {0}, base {1}, max {2}, maxTarget {3}",
-                _spell.SpellLevel, _spell.BaseLevel, _spell.MaxLevel, _spell.MaxTargetLevel);
+            _rtb.AppendFormatLine($"SpellLevel = {_spell.SpellLevel}, BaseLevel = {_spell.BaseLevel}, MaxLevel =  {_spell.MaxLevel}, MaxTargetLevel = {_spell.MaxTargetLevel}, ConeAngle = {_spell.ConeAngle}");
 
             if (_spell.EquippedItemClass != 0)
             {
@@ -179,8 +179,9 @@ namespace SpellWork.Spell
                 _rtb.AppendLine();
             }
 
-            _rtb.AppendFormatLine("Interrupt Flags: 0x{0:X8}, AuraIF 0x{1:X8}, ChannelIF 0x{2:X8}",
-                _spell.InterruptFlags, _spell.AuraInterruptFlags, _spell.ChannelInterruptFlags);
+            _rtb.AppendFormatLine("Interrupt Flags: 0x{0:X8} ({1})", _spell.InterruptFlags, (SpellInterruptFlags)_spell.InterruptFlags);
+            _rtb.AppendFormatLine("AuraInterrupt Flags: 0x{0:X8} ({1}), 0x{2:X8} ({3})", _spell.AuraInterruptFlags[0], (SpellAuraInterruptFlags)_spell.AuraInterruptFlags[0], _spell.AuraInterruptFlags[1], (SpellAuraInterruptFlags2)_spell.AuraInterruptFlags[1]);
+            _rtb.AppendFormatLine("ChannelInterrupt Flags: 0x{0:X8} ({1}), 0x{2:X8} ({3})", _spell.ChannelInterruptFlags[0], (SpellAuraInterruptFlags)_spell.ChannelInterruptFlags[0], _spell.ChannelInterruptFlags[1], (SpellAuraInterruptFlags2)_spell.ChannelInterruptFlags[1]);
 
             if (_spell.CasterAuraState != 0)
                 _rtb.AppendFormatLine("CasterAuraState = {0} ({1})", _spell.CasterAuraState, (AuraState)_spell.CasterAuraState);

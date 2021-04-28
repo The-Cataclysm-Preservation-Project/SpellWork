@@ -40,9 +40,9 @@ namespace SpellWork.Spell
         public uint CastingTimeIndex;                             // 28       m_castingTimeIndex
         public uint RecoveryTime;                                 // 29       m_recoveryTime
         public uint CategoryRecoveryTime;                         // 30       m_categoryRecoveryTime
-        public uint InterruptFlags;                               // 31       m_interruptFlags
-        public uint AuraInterruptFlags;                           // 32       m_auraInterruptFlags
-        public uint ChannelInterruptFlags;                        // 33       m_channelInterruptFlags
+        public uint[] AuraInterruptFlags;                         // 31       m_interruptFlags
+        public uint[] ChannelInterruptFlags;                      // 32       m_auraInterruptFlags
+        public uint InterruptFlags;                               // 33       m_channelInterruptFlags
         public uint ProcFlags;                                    // 34       m_procTypeMask
         public uint ProcChance;                                   // 35       m_procChance
         public uint ProcCharges;                                  // 36       m_procCharges
@@ -79,6 +79,7 @@ namespace SpellWork.Spell
         public uint SpellFamilyName;                              // 208      m_spellClassSet
         public uint[] SpellFamilyFlags;                           // 209-211  m_spellClassMask
         public uint MaxAffectedTargets;                           // 212      m_maxTargets
+        public float ConeAngle;
         public uint DmgClass;                                     // 213      m_defenseType
         public uint PreventionType;                               // 214      m_preventionType
         public int StanceBarOrder;                                // 215      m_stanceBarOrder not used
@@ -254,6 +255,7 @@ namespace SpellWork.Spell
                 TargetCreatureType = targetRestrictions.TargetCreatureType;
                 MaxAffectedTargets = targetRestrictions.MaxAffectedTargets;
                 MaxTargetLevel = targetRestrictions.MaxTargetLevel;
+                ConeAngle = targetRestrictions.ConeAngle;
             }
 
             // SpellCastingRequirements.dbc
@@ -295,9 +297,14 @@ namespace SpellWork.Spell
             var interrupts = dbcData.Interrupts;
             if (interrupts != null)
             {
+                AuraInterruptFlags = (uint[])interrupts.AuraInterruptFlags.Clone();
+                ChannelInterruptFlags = (uint[])interrupts.ChannelInterruptFlags.Clone();
                 InterruptFlags = interrupts.InterruptFlags;
-                AuraInterruptFlags = interrupts.AuraInterruptFlags;
-                ChannelInterruptFlags = interrupts.ChannelInterruptFlags;
+            }
+            else
+            {
+                AuraInterruptFlags = new uint[2];
+                ChannelInterruptFlags = new uint[2];
             }
 
             // SpellAuraOptions.dbc
