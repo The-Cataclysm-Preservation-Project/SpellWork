@@ -306,7 +306,7 @@ namespace SpellWork.Spell
                     continue;
 
                 _rtb.SetBold();
-                _rtb.AppendFormatLine("Effect {0}: Id {1} ({2})", effect.Index, effect.Type, (SpellEffects)effect.Type);
+                _rtb.AppendFormatLine("Effect {0}: Id {1} ({2})", effect.EffectIndex, effect.Effect, (SpellEffects)effect.Effect);
                 _rtb.SetDefaultStyle();
 
                 if (effect.ScalingMultiplier != 0.0f && _spell.Scaling != null && _spell.Scaling.PlayerClass != 0)
@@ -330,40 +330,40 @@ namespace SpellWork.Spell
                     if (effect.ComboPointsScalingMultiplier != 0.0f)
                         _rtb.AppendFormatIfNotNull(" + combo * {0:F}", effect.ComboPointsScalingMultiplier * gtMultiplier);
                     else
-                        _rtb.AppendFormatIfNotNull(" + combo * {0:F}", effect.PointsPerComboPoint);
+                        _rtb.AppendFormatIfNotNull(" + combo * {0:F}", effect.EffectPointsPerResource);
                 }
                 else
                 {
-                    _rtb.AppendFormat("BasePoints = {0}", effect.BasePoints + ((effect.DieSides == 0) ? 0 : 1));
+                    _rtb.AppendFormat("BasePoints = {0}", effect.EffectBasePoints + ((effect.EffectDieSides == 0) ? 0 : 1));
 
-                    if (effect.RealPointsPerLevel != 0)
-                        _rtb.AppendFormat(" + Level * {0:F}", effect.RealPointsPerLevel);
+                    if (effect.EffectRealPointsPerLevel != 0)
+                        _rtb.AppendFormat(" + Level * {0:F}", effect.EffectRealPointsPerLevel);
 
-                    if (effect.DieSides > 1)
+                    if (effect.EffectDieSides > 1)
                     {
-                        if (effect.RealPointsPerLevel != 0)
+                        if (effect.EffectRealPointsPerLevel != 0)
                             _rtb.AppendFormat(" to {0} + lvl * {1:F}",
-                                effect.BasePoints + effect.DieSides, effect.RealPointsPerLevel);
+                                effect.EffectBasePoints + effect.EffectDieSides, effect.EffectRealPointsPerLevel);
                         else
-                            _rtb.AppendFormat(" to {0}", effect.BasePoints + effect.DieSides);
+                            _rtb.AppendFormat(" to {0}", effect.EffectBasePoints + effect.EffectDieSides);
                     }
 
-                    _rtb.AppendFormatIfNotNull(" + combo * {0:F}", effect.PointsPerComboPoint);
+                    _rtb.AppendFormatIfNotNull(" + combo * {0:F}", effect.EffectPointsPerResource);
                 }
 
-                if (effect.DamageMultiplier != 1.0f)
-                    _rtb.AppendFormat(" x {0:F}", effect.DamageMultiplier);
+                if (effect.EffectChainAmplitude != 1.0f)
+                    _rtb.AppendFormat(" x {0:F}", effect.EffectChainAmplitude);
 
-                _rtb.AppendFormatIfNotNull("  Multiple = {0:F}", effect.ValueMultiplier);
+                _rtb.AppendFormatIfNotNull("  Multiple = {0:F}", effect.EffectAmplitude);
                 _rtb.AppendLine();
 
                 _rtb.AppendFormatLine("Targets ({0}, {1}) ({2}, {3})",
-                    effect.ImplicitTargetA, effect.ImplicitTargetB,
-                    (Targets)effect.ImplicitTargetA, (Targets)effect.ImplicitTargetB);
+                    effect.EffectImplicitTargetA, effect.EffectImplicitTargetB,
+                    (Targets)effect.EffectImplicitTargetA, (Targets)effect.EffectImplicitTargetB);
 
                 AuraModTypeName(effect);
 
-                var classMask = effect.SpellClassMask;
+                var classMask = effect.EffectSpellClassMask;
 
                 if (classMask[0] != 0 || classMask[1] != 0 || classMask[2] != 0)
                 {
@@ -400,7 +400,7 @@ namespace SpellWork.Spell
                 _rtb.AppendFormatLineIfNotNull("{0}", effect.MaxRadius);
 
                 // append trigger spell
-                var trigger = effect.TriggerSpell;
+                var trigger = effect.EffectTriggerSpell;
                 if (trigger != 0)
                 {
                     if (DBC.DBC.SpellInfoStore.ContainsKey(trigger))
@@ -423,11 +423,11 @@ namespace SpellWork.Spell
                         _rtb.AppendFormatLine("Trigger spell ({0}) Not found, Chance = {1}", trigger, _spell.ProcChance);
                 }
 
-                _rtb.AppendFormatLineIfNotNull("EffectChainTarget = {0}", effect.ChainTarget);
-                _rtb.AppendFormatLineIfNotNull("EffectItemType = {0}", effect.ItemType);
+                _rtb.AppendFormatLineIfNotNull("EffectChainTarget = {0}", effect.EffectChainTargets);
+                _rtb.AppendFormatLineIfNotNull("EffectItemType = {0}", effect.EffectItemType);
 
-                if ((Mechanics)effect.Mechanic != Mechanics.MECHANIC_NONE)
-                    _rtb.AppendFormatLine("Effect Mechanic = {0} ({1})", effect.Mechanic, (Mechanics)effect.Mechanic);
+                if ((Mechanics)effect.EffectMechanic != Mechanics.MECHANIC_NONE)
+                    _rtb.AppendFormatLine("Effect Mechanic = {0} ({1})", effect.EffectMechanic, (Mechanics)effect.EffectMechanic);
 
                 _rtb.AppendLine();
             }
@@ -472,20 +472,20 @@ namespace SpellWork.Spell
 
         private void AuraModTypeName(SpellEffectEntry effect)
         {
-            var aura = (AuraType)effect.ApplyAuraName;
-            var misc = effect.MiscValue;
+            var aura = (AuraType)effect.EffectAura;
+            var misc = effect.EffectMiscValue;
 
-            if (effect.ApplyAuraName == 0)
+            if (effect.EffectAura == 0)
             {
-                _rtb.AppendFormatLineIfNotNull("EffectMiscValueA = {0}", effect.MiscValue);
-                _rtb.AppendFormatLineIfNotNull("EffectMiscValueB = {0}", effect.MiscValueB);
-                _rtb.AppendFormatLineIfNotNull("EffectAmplitude = {0}", effect.Amplitude);
+                _rtb.AppendFormatLineIfNotNull("EffectMiscValueA = {0}", effect.EffectMiscValue);
+                _rtb.AppendFormatLineIfNotNull("EffectMiscValueB = {0}", effect.EffectMiscValueB);
+                _rtb.AppendFormatLineIfNotNull("EffectAuraPeriod = {0}", effect.EffectAuraPeriod);
 
                 return;
             }
 
             _rtb.AppendFormat("Aura Id {0:D} ({0})", aura);
-            _rtb.AppendFormat(", value = {0}", effect.BasePoints);
+            _rtb.AppendFormat(", value = {0}", effect.EffectBasePoints);
             _rtb.AppendFormat(", misc = {0} (", misc);
 
             switch (aura)
@@ -506,8 +506,8 @@ namespace SpellWork.Spell
                     break;
             }
 
-            _rtb.AppendFormat("), miscB = {0}", effect.MiscValueB);
-            _rtb.AppendFormatLine(", periodic = {0}", effect.Amplitude);
+            _rtb.AppendFormat("), miscB = {0}", effect.EffectMiscValueB);
+            _rtb.AppendFormatLine(", periodic = {0}", effect.EffectAuraPeriod);
 
             switch (aura)
             {

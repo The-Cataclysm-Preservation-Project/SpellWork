@@ -116,16 +116,16 @@ namespace SpellWork.DBC
 
             foreach (var effect in SpellEffect.Records)
             {
-                if (!SpellInfoStore.ContainsKey(effect.SpellId))
+                if (!SpellInfoStore.ContainsKey(effect.SpellID))
                     continue;
 
-                SpellInfoStore[effect.SpellId].Effects[effect.Index] = effect;
-                var scaling = SpellInfoStore[effect.SpellId].Scaling;
+                SpellInfoStore[effect.SpellID].Effects[effect.EffectIndex] = effect;
+                var scaling = SpellInfoStore[effect.SpellID].Scaling;
                 if (scaling != null)
                 {
-                    effect.ScalingMultiplier = scaling.Multiplier[effect.Index];
-                    effect.RandomPointsScalingMultiplier = scaling.RandomPointsMultiplier[effect.Index];
-                    effect.ComboPointsScalingMultiplier = scaling.OtherMultiplier[effect.Index];
+                    effect.ScalingMultiplier = scaling.Multiplier[effect.EffectIndex];
+                    effect.RandomPointsScalingMultiplier = scaling.RandomPointsMultiplier[effect.EffectIndex];
+                    effect.ComboPointsScalingMultiplier = scaling.OtherMultiplier[effect.EffectIndex];
                 }
             }
 
