@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSettings));
+            this.components = new System.ComponentModel.Container();
             this._gbDbSetting = new System.Windows.Forms.GroupBox();
             this._tbBase = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
